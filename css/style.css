@@ -1,7 +1,3 @@
-/* --- PASTE ALL THE CSS FROM THE ORIGINAL <style> TAG HERE --- */
-/* (The CSS is very long, so it is omitted here for brevity. 
-   Just copy everything from the original file's <style> tag and paste it here.) */
-
 * {
     margin: 0;
     padding: 0;
@@ -556,4 +552,45 @@ select:hover, .theme-toggle:hover {
     .service-details {
         grid-template-columns: 1fr;
     }
+}
+
+.legend-card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 16px;
+    margin-top: 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+}
+
+.legend-title {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    min-width: 25px;
+}
+
+.legend-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
