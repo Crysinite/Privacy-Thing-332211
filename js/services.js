@@ -15,7 +15,7 @@ const services = [
         fourteenEyes: false,
         torAvailable: true,
         description: "US-based public company owned by Meta.",
-        detailPage: "pages/services/facebook.html" // Path to its own page
+        detailPage: "pages/services/facebook.html"
     },
     {
         name: "X/Twitter",
@@ -33,13 +33,32 @@ const services = [
         fourteenEyes: false,
         torAvailable: false,
         description: "Owned by X Corp, a private company based in the US.",
-        detailPage: "pages/services/twitter.html" // Path to its own page
+        detailPage: "pages/services/twitter.html"
     },
     {
         name: "Discord",
-        category: "social",
+        category: "messaging", // CHANGED from "social"
         rating: 9,
         popularity: 75,
+        free: true,
+        openSource: false,
+        partiallyOpenSource: false,
+        ads: true,
+        inAppPurchases: true,
+        endToEndEncrypted: false, // Voice is E2E, text is not. False is safer for the card.
+        fiveEyes: true,
+        nineEyes: false,
+        fourteenEyes: false,
+        torAvailable: false,
+        description: "Private, US-based company.",
+        detailPage: "pages/services/discord.html"
+    },
+    // --- NEW SERVICES ADDED BELOW ---
+    {
+        name: "YouTube",
+        category: "social",
+        rating: 11,
+        popularity: 95,
         free: true,
         openSource: false,
         partiallyOpenSource: false,
@@ -50,7 +69,61 @@ const services = [
         nineEyes: false,
         fourteenEyes: false,
         torAvailable: false,
-        description: "Private, US-based company.",
-        detailPage: "pages/services/discord.html" // Path to its own page
+        description: "US-based video-sharing platform owned by Google.",
+        detailPage: "pages/services/youtube.html"
+    },
+    {
+        name: "Snapchat",
+        category: "messaging",
+        rating: 10,
+        popularity: 80,
+        free: true,
+        openSource: false,
+        partiallyOpenSource: false,
+        ads: true,
+        inAppPurchases: true,
+        endToEndEncrypted: false, // Marked false due to MITM risk.
+        fiveEyes: true,
+        nineEyes: false,
+        fourteenEyes: false,
+        torAvailable: false,
+        description: "US-based multimedia messaging app owned by Snap Inc.",
+        detailPage: "pages/services/snapchat.html"
+    },
+    {
+        name: "Instagram",
+        category: "social",
+        rating: 11,
+        popularity: 88,
+        free: true,
+        openSource: false,
+        partiallyOpenSource: false,
+        ads: true,
+        inAppPurchases: true,
+        endToEndEncrypted: false,
+        fiveEyes: true,
+        nineEyes: false,
+        fourteenEyes: false,
+        torAvailable: false,
+        description: "US-based photo and video sharing service owned by Meta.",
+        detailPage: "pages/services/instagram.html"
+    },
+    {
+        name: "Bluesky",
+        category: "social",
+        rating: 4,
+        popularity: 30,
+        free: true,
+        openSource: true,
+        partiallyOpenSource: false,
+        ads: false,
+        inAppPurchases: false,
+        endToEndEncrypted: false,
+        fiveEyes: true,
+        nineEyes: false,
+        fourteenEyes: false,
+        torAvailable: false,
+        description: "A decentralized social network protocol, spun out of Twitter.",
+        detailPage: "pages/services/bluesky.html"
     }
 ];
