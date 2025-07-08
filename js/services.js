@@ -37,7 +37,7 @@ const services = [
     },
     {
         name: "Discord",
-        category: "messaging", // CHANGED from "social"
+        category: "messaging",
         rating: 9,
         popularity: 75,
         free: true,
@@ -53,7 +53,6 @@ const services = [
         description: "Private, US-based company.",
         detailPage: "pages/services/discord.html"
     },
-    // --- NEW SERVICES ADDED BELOW ---
     {
         name: "YouTube",
         category: "social",
@@ -125,5 +124,35 @@ const services = [
         torAvailable: false,
         description: "A decentralized social network protocol, spun out of Twitter.",
         detailPage: "pages/services/bluesky.html"
+    },
+    {
+        name: "Google",
+        category: "search",
+        rating: 11,
+        popularity: 98,
+        free: true, openSource: false, partiallyOpenSource: false, ads: true, inAppPurchases: false, endToEndEncrypted: false,
+        fiveEyes: true, nineEyes: false, fourteenEyes: false, torAvailable: false,
+        description: "The world's most dominant search engine with extensive data collection practices.",
+        detailPage: "pages/services/google.html"
+    },
+    {
+        name: "Bing",
+        category: "search",
+        rating: 10,
+        popularity: 70,
+        free: true, openSource: false, partiallyOpenSource: false, ads: true, inAppPurchases: false, endToEndEncrypted: false,
+        fiveEyes: true, nineEyes: false, fourteenEyes: false, torAvailable: false,
+        description: "Microsoft's web search engine, integrated with its AI chatbot, Copilot.",
+        detailPage: "pages/services/bing.html"
+    },
+    {
+        name: "Yahoo",
+        category: "search",
+        rating: 9,
+        popularity: 50,
+        free: true, openSource: false, partiallyOpenSource: false, ads: true, inAppPurchases: false, endToEndEncrypted: false,
+        fiveEyes: true, nineEyes: false, fourteenEyes: false, torAvailable: false,
+        description: "A web portal and search engine powered by Bing, with a history of major data breaches.",
+        detailPage: "pages/services/yahoo.html"
     }
 ];
