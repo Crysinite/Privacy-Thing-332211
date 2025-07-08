@@ -1,0 +1,65 @@
+<div class="page active">
+    <div class="container">
+        <header>
+            <div class="header-content-wrapper">
+                <h1>Privacy Guide</h1>
+                <p class="subtitle">Services are rated on how private & secure they are, not on whether it's a good service or not. If an app is rated 1/10 that doesn't mean it's the best app ever, it just means that app respects your privacy.</p>
+            </div>
+            <div class="last-updated">
+                <strong>Last Updated:</strong> July 7th, 2025
+            </div>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="categoryFilter">Filter by Category</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="social">Social Media</option>
+                    <option value="search">Search Engines</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="sortBy">Sort by</label>
+                <select id="sortBy">
+                    <option value="rating-desc">Rating: Worst First</option>
+                    <option value="rating-asc">Rating: Best First</option>
+                    <option value="popularity">Popularity</option>
+                    <option value="alphabetical">Alphabetical</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="tagFilter">Filter by Tags</label>
+                <select id="tagFilter">
+                    <option value="all">All Tags</option>
+                    <option value="five-eyes">5 Eyes</option>
+                    <option value="nine-eyes">9 Eyes</option>
+                    <option value="fourteen-eyes">14 Eyes</option>
+                    <option value="tor">Tor Available</option>
+                    <option value="open-source">Fully Open Source</option>
+                    <option value="partially-open-source">Partially Open Source</option>
+                    <option value="no-ads">No Ads</option>
+                    <option value="e2e-encrypted">E2E Encrypted</option>
+                </select>
+            </div>
+
+            <button class="theme-toggle">🌙 Dark Mode</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalServices">0</div>
+                <div class="stat-label">Total Services</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="averageRating">0.0</div>
+                <div class="stat-label">Average Rating (Lower is better)</div>
+            </div>
+        </div>
+
+        <div class="services-grid" id="servicesGrid">
+        </div>
+    </div>
+</div>
