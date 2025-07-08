@@ -3,21 +3,19 @@ let filteredServices = [...services];
 
 const pageContent = document.getElementById('page-content');
 
-async function loadPage(pageName, serviceName = null) {
+async function loadPage(filePath, isHomePage = false) {
     try {
-        const response = await fetch(`pages/${pageName}.html`);
+        const response = await fetch(filePath);
         if (!response.ok) {
-            throw new Error(`Could not load page: ${pageName}`);
+            throw new Error(`Could not load page: ${filePath}`);
         }
         const html = await response.text();
         pageContent.innerHTML = html;
         window.scrollTo(0, 0);
 
-        // After loading the page, run page-specific logic
-        if (pageName === 'home') {
+        // If the loaded page is the home page, initialize its specific JS
+        if (isHomePage) {
             initializeHomePage();
-        } else if (pageName === 'service-detail' && serviceName) {
-            initializeDetailPage(serviceName);
         }
     } catch (error) {
         console.error('Failed to load page:', error);
@@ -26,45 +24,17 @@ async function loadPage(pageName, serviceName = null) {
 }
 
 function initializeHomePage() {
-    // Re-add event listeners for controls on the home page
+    // Add event listeners for controls on the home page
     document.getElementById('categoryFilter').addEventListener('change', filterAndSort);
     document.getElementById('tagFilter').addEventListener('change', filterAndSort);
     document.getElementById('sortBy').addEventListener('change', filterAndSort);
     document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
+    // Restore theme preference
+    document.body.setAttribute('data-theme', currentTheme);
+    document.querySelector('.theme-toggle').textContent = currentTheme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode';
 
-    // Initial render
     filterAndSort();
 }
-
-function initializeDetailPage(serviceName) {
-    const service = services.find(s => s.name === serviceName);
-    if (!service) return;
-
-    document.getElementById('service-detail-title').textContent = service.name;
-    document.getElementById('service-detail-subtitle').textContent = `${service.category === 'social' ? 'Social Media' : 'Search Engine'} • Privacy Rating: ${service.rating}/10`;
-    document.getElementById('service-detail-content').innerHTML = service.detailContent;
-
-    const ratingContainer = document.getElementById('service-detail-rating-container');
-    const alarmClass = service.rating >= 11 ? 'rating-alarm' : '';
-    ratingContainer.innerHTML = `
-        <div class="rating-label">
-            <span>Privacy Rating</span>
-            <span><strong>${service.rating}/10</strong></span>
-        </div>
-        <div class="rating-bar">
-            <div id="detail-rating-fill" class="rating-fill rating-${service.rating} ${alarmClass}" style="width: 0%"></div>
-        </div>
-    `;
-
-    setTimeout(() => {
-        const fill = document.getElementById('detail-rating-fill');
-        if (fill) {
-            const width = service.rating >= 10 ? 100 : (service.rating / 10) * 100;
-            fill.style.width = width + '%';
-        }
-    }, 100);
-}
-
 
 function toggleTheme() {
     currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -75,7 +45,6 @@ function toggleTheme() {
 }
 
 function animateHomeBars() {
-    // This function is now called inside renderServices()
     const ratingFills = document.querySelectorAll('#servicesGrid .rating-fill');
     ratingFills.forEach(fill => {
         fill.style.width = '0%';
@@ -113,7 +82,8 @@ function createServiceCard(service) {
     card.setAttribute('data-name', service.name);
     card.setAttribute('data-category', service.category);
     card.setAttribute('data-rating', service.rating);
-    card.onclick = () => loadPage('service-detail', service.name);
+    // The onclick now loads the specific page for the service
+    card.onclick = () => loadPage(service.detailPage);
 
     const tags = getTags(service);
     const tagElements = tags.map(tag => `<span class="tag ${tag.class}">${tag.text}</span>`).join('');
@@ -137,39 +107,21 @@ function createServiceCard(service) {
         </div>
 
         <div class="service-details">
-            <div class="detail-item">
-                <span class="detail-label">Free:</span>
-                <span>${service.free ? '✅' : '❌'}</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Fully Open Source:</span>
-                <span>${service.openSource ? '✅' : '❌'}</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Ads:</span>
-                <span>${service.ads ? '✅' : '❌'}</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">E2E Encrypted:</span>
-                <span>${service.name === 'Discord' ? '🟡' : (service.endToEndEncrypted ? '✅' : '❌')}</span>
-            </div>
+            <div class="detail-item"><span class="detail-label">Free:</span><span>${service.free ? '✅' : '❌'}</span></div>
+            <div class="detail-item"><span class="detail-label">Fully Open Source:</span><span>${service.openSource ? '✅' : '❌'}</span></div>
+            <div class="detail-item"><span class="detail-label">Ads:</span><span>${service.ads ? '✅' : '❌'}</span></div>
+            <div class="detail-item"><span class="detail-label">E2E Encrypted:</span><span>${service.name === 'Discord' ? '🟡' : (service.endToEndEncrypted ? '✅' : '❌')}</span></div>
         </div>
 
-        <div class="tags-container">
-            ${tagElements}
-        </div>
-
-        <div class="service-description">
-            ${service.description}
-        </div>
+        <div class="tags-container">${tagElements}</div>
+        <div class="service-description">${service.description}</div>
     `;
-
     return card;
 }
 
 function renderServices() {
     const grid = document.getElementById('servicesGrid');
-    if (!grid) return; // Exit if the grid isn't on the current page
+    if (!grid) return;
     grid.innerHTML = '';
 
     filteredServices.forEach(service => {
@@ -184,16 +136,17 @@ function updateStats() {
     const totalServicesEl = document.getElementById('totalServices');
     const averageRatingEl = document.getElementById('averageRating');
 
-    if (!totalServicesEl || !averageRatingEl) return; // Exit if stats aren't on page
+    if (!totalServicesEl || !averageRatingEl) return;
 
     const totalServices = filteredServices.length;
-    const averageRating = totalServices > 0 ? (filteredServices.reduce((sum, service) => sum + service.rating, 0) / totalServices).toFixed(1) : '0.0';
+    const averageRating = totalServices > 0 ? (filteredServices.reduce((sum, s) => sum + s.rating, 0) / totalServices).toFixed(1) : '0.0';
 
     totalServicesEl.textContent = totalServices;
     averageRatingEl.textContent = averageRating;
 }
 
 function hasTag(service, tag) {
+    // ... (This function remains unchanged) ...
     switch(tag) {
         case 'five-eyes': return service.fiveEyes;
         case 'nine-eyes': return service.nineEyes;
@@ -208,6 +161,7 @@ function hasTag(service, tag) {
 }
 
 function filterAndSort() {
+    // ... (This function remains unchanged) ...
     const categoryFilter = document.getElementById('categoryFilter').value;
     const tagFilter = document.getElementById('tagFilter').value;
     const sortBy = document.getElementById('sortBy').value;
@@ -239,5 +193,5 @@ function filterAndSort() {
 
 // Initial page load
 document.addEventListener('DOMContentLoaded', () => {
-    loadPage('home');
+    loadPage('pages/home.html', true);
 });
