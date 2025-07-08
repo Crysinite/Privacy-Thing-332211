@@ -85,6 +85,21 @@ function createServiceCard(service) {
     // The onclick now loads the specific page for the service
     card.onclick = () => loadPage(service.detailPage);
 
+    // --- UPDATED: More robust logic for displaying category names ---
+    let categoryDisplay = 'Service'; // Default fallback
+    switch (service.category) {
+        case 'social':
+            categoryDisplay = 'Social Media';
+            break;
+        case 'messaging':
+            categoryDisplay = 'Messaging';
+            break;
+        case 'search':
+            categoryDisplay = 'Search Engine';
+            break;
+    }
+    // --- END OF UPDATE ---
+
     const tags = getTags(service);
     const tagElements = tags.map(tag => `<span class="tag ${tag.class}">${tag.text}</span>`).join('');
 
@@ -93,7 +108,7 @@ function createServiceCard(service) {
     card.innerHTML = `
         <div class="service-header">
             <h3 class="service-name">${service.name}</h3>
-            <span class="service-category">${service.category === 'social' ? 'Social Media' : 'Search Engine'}</span>
+            <span class="service-category">${categoryDisplay}</span>
         </div>
 
         <div class="rating-container">
@@ -110,7 +125,10 @@ function createServiceCard(service) {
             <div class="detail-item"><span class="detail-label">Free:</span><span>${service.free ? '✅' : '❌'}</span></div>
             <div class="detail-item"><span class="detail-label">Fully Open Source:</span><span>${service.openSource ? '✅' : '❌'}</span></div>
             <div class="detail-item"><span class="detail-label">Ads:</span><span>${service.ads ? '✅' : '❌'}</span></div>
-            <div class="detail-item"><span class="detail-label">E2E Encrypted:</span><span>${service.name === 'Discord' ? '🟡' : (service.endToEndEncrypted ? '✅' : '❌')}</span></div>
+            
+            <!-- --- UPDATED: E2E icon logic now includes Snapchat --- -->
+            <div class="detail-item"><span class="detail-label">E2E Encrypted:</span><span>${['Discord', 'Snapchat'].includes(service.name) ? '🟡' : (service.endToEndEncrypted ? '✅' : '❌')}</span></div>
+            <!-- --- END OF UPDATE --- -->
         </div>
 
         <div class="tags-container">${tagElements}</div>
@@ -146,7 +164,6 @@ function updateStats() {
 }
 
 function hasTag(service, tag) {
-    // ... (This function remains unchanged) ...
     switch(tag) {
         case 'five-eyes': return service.fiveEyes;
         case 'nine-eyes': return service.nineEyes;
@@ -161,7 +178,6 @@ function hasTag(service, tag) {
 }
 
 function filterAndSort() {
-    // ... (This function remains unchanged) ...
     const categoryFilter = document.getElementById('categoryFilter').value;
     const tagFilter = document.getElementById('tagFilter').value;
     const sortBy = document.getElementById('sortBy').value;
